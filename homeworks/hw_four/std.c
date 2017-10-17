@@ -55,7 +55,7 @@ void convert(char* directory, char* name, char* program, char* new_directory) {
 			fprintf(new_file, ",%f", normalization(num));
 			// fprintf(stdout, "%f\n", normalization(num));
 		}
-		fprintf(new_file, "\n");
+		fprintf(new_file, "%d\n", rand() % 100);
 	}
 	
 	fclose(file);

@@ -1,2 +1,16 @@
 # Profesor git
-advanced_programming/*
+
+#exams
+exams/examen1/mycode/
+exams/examen1/Complex.java
+exams/examen1/Example3.java
+exams/examen1/ImageFrame.java
+exams/examen1/MainExample3.java
+
+# homeworks
+homeworks/hw_four/new_out/
+homeworks/hw_four/outputs/
+homeworks/hw_four/outputs.zip
+
+# projects
+projects/project_one/test/
