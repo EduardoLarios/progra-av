@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
 	size = atoi(argv[1]);
 	if (size < 1) {
-		fprintf(stderr, "%s: The size must be a positive number greater than zero.\n", argv[1]);
+		fprintf(stderr, "%s: The size must be a positive number greater than zero.\n", argv[0]);
 		return -1;
 	}
 
