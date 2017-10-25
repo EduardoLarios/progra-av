@@ -22,7 +22,7 @@ void a_barber(char* program) {
 		printf("Barber %i is going to sleep.\n", getpid());
 		sleep();
 	} else {
-		printf("Barber %i is attending a client %i\n", getpid(), i, semctl(semid, CLIENTS, GETVAL, 0));
+		printf("Barber %i is attending a client %i\n", getpid(), semctl(semid, CLIENTS, GETVAL, 0));
 		sem_wait(semid, SHAVING_ROOM, 1);
 		sem_wait(semid, CLIENTS, 1);
 		sem_signal(semid, WAITING_ROOM, 1);
