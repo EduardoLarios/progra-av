@@ -1,0 +1,18 @@
+gcc barberia.c -o barberia
+gcc cliente.c -o cliente
+gcc barbero.c -o barbero
+
+
+
+./barberia
+./barberia -1
+./barberia 0
+./barberia 10
+
+./barbero 12
+./barbero
+
+./cliente
+./cliente 0
+./cliente -1
+./cliente 5
