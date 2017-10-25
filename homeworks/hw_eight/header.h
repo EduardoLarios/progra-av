@@ -7,9 +7,10 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 
-#define CLIENTS 				0
-#define SHAVING_ROOM 		1
-#define WAITING_ROOM 		2
+#define BARBER			 0
+#define CLIENTS 		 1
+#define SHAVING_ROOM 2
+#define WAITING_ROOM 3
 
 int sem_wait(int semid, int semnum, unsigned int val) {
 	struct sembuf op;

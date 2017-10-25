@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]) {
 	int i, semid, size;
-	unsigned short final_values[3];
+	unsigned short final_values[4];
 	key_t key;
 
 	if (argc != 2) {
@@ -21,18 +21,19 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	if ( (semid = semget(key, 3, 0666 | IPC_CREAT)) < 0 ) {
+	if ( (semid = semget(key, 4, 0666 | IPC_CREAT)) < 0 ) {
 		perror(argv[0]);
 		return -1;
 	}
 
+	semctl(semid, BARBER, SETVAL, 1);
 	semctl(semid, CLIENTS, SETVAL, 1);
 	semctl(semid, SHAVING_ROOM, SETVAL, 1);
 	semctl(semid, WAITING_ROOM,	 SETVAL, (size - 1));
 
-	semctl(semid, CLIENTS, GETALL, final_values);
+	semctl(semid, BARBER, GETALL, final_values);
 	printf("value: ");
-	for (i = 0; i < 3; i++) {
+	for (i = 0; i < 4; i++) {
 		printf("%3i", final_values[i]);
 	}
 	printf("\n");
