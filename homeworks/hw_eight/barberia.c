@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 
 	semctl(semid, CLIENTS, GETALL, final_values);
 	printf("value: ");
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < 3; i++) {
 		printf("%3i", final_values[i]);
 	}
 	printf("\n");
