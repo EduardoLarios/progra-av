@@ -20,12 +20,12 @@ void a_cliente(char* program, int wait_time) {
 		sem_wait(semid, CLIENTS, 1);
 		printf("Client %i accesing the barber.\n", getpid());
 
-		if (semctl(semid, SHAVING_ROOM, GETVAL, 0)) {
+		if (!semctl(semid, SHAVING_ROOM, GETVAL, 0)) {
 			printf("Client %i is in the shaving room.\n", getpid());
 			sem_wait(semid, SHAVING_ROOM, 1);
 			sem_signal(semid, WAITING_ROOM, 1);
 			sleep(wait_time);
-		} else if (semctl(semid, WAITING_ROOM, GETVAL, 0)) {
+		} else if (!semctl(semid, WAITING_ROOM, GETVAL, 0)) {
 			printf("Client %i is going to sleep.\n", getpid());
 			sleep(wait_time);
 		} else {

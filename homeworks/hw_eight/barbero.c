@@ -17,7 +17,7 @@ void a_barber(char* program) {
 	sem_wait(semid, BARBER, 1);
 	printf("Barber is in barbershop.\n");
 
-	if (semctl(semid, WAITING_ROOM, GETVAL, 0) && semctl(semid, SHAVING_ROOM, GETVAL, 0)) {
+	if (!((semctl(semid, WAITING_ROOM, GETVAL, 0) == 10) && semctl(semid, SHAVING_ROOM, GETVAL, 0))) {
 		sem_signal(semid, BARBER, 1);
 		printf("Barber %i is going to sleep.\n", getpid());
 		sleep(10);
