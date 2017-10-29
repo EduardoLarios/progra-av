@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	semctl(semid, BARBER, SETVAL, 1);
-	semctl(semid, CLIENTS, SETVAL, 1);
+	semctl(semid, CLIENTS, SETVAL, 0);
 	semctl(semid, SHAVING_ROOM, SETVAL, 1);
 	semctl(semid, WAITING_ROOM,	 SETVAL, (size - 1));
 

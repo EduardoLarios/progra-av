@@ -6,4 +6,4 @@ gcc barbero.c -o barbero
 
 ./barbero
 
-./cliente 5
+./cliente 10 5
