@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 		perror(argv[0]);
 		return -1;
 	} else if (pid == 0) {
-		a_producer(argv[0]);
+		a_barber(argv[0]);
 	} else {
 		//do_nothing
 	}
