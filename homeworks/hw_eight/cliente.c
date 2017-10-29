@@ -36,7 +36,7 @@ void a_cliente(char* program, int wait_time) {
 int main(int argc, char* argv[]) {
 	int amount, pid, i, wait_time;
 
-	if (argc != 2) {
+	if (argc != 3) {
 		fprintf(stderr, "usage: %s numero_de_clientes periodo_de_regreso\n", argv[0]);
 		return -1;
 	}
