@@ -14,7 +14,7 @@ void a_cliente(char* program, int wait_time) {
 		exit(-1);
 	}
 
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < 4; i++) {
 		printf("Client %i trying to access the barber.\n", getpid());
 		sem_wait(semid, SHAVING_ROOM, 1);
 		if (semctl(semid, WAITING_ROOM, GETVAL, 0) > 0) {
