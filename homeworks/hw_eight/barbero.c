@@ -20,7 +20,7 @@ void a_barber(char* program) {
 	if (semctl(semid, WAITING_ROOM, GETVAL, 0) && semctl(semid, SHAVING_ROOM, GETVAL, 0)) {
 		sem_signal(semid, BARBER, 1);
 		printf("Barber %i is going to sleep.\n", getpid());
-		sleep();
+		sleep(NULL);
 	} else {
 		printf("Barber %i is attending a client %i\n", getpid(), semctl(semid, CLIENTS, GETVAL, 0));
 		sem_wait(semid, SHAVING_ROOM, 1);
