@@ -17,16 +17,19 @@ void a_cliente(char* program, int wait_time) {
 	for (k = 0; k < 10; k++) {
 
 		printf("Client %i trying to access the barber.\n", getpid());
-		sem_wait(semid, CONSUMERS, 1);
-		printf("Consumer %i accesing the barber.\n", getpid());
+		sem_wait(semid, CLIENTS, 1);
+		printf("Client %i accesing the barber.\n", getpid());
 
-		if (semctl(semid, SHAVING_ROOM, GET_VAL, 0)) {
+		if (semctl(semid, SHAVING_ROOM, GETVAL, 0)) {
+			printf("Client %i is in the shaving room.\n", getpid());
 			sem_wait(semid, SHAVING_ROOM, 1);
 			sem_signal(semid, WAITING_ROOM, 1);
 			sleep(wait_time);
-		} else if (semctl(semid, WAITING_ROOM, GET_VAL, 0)) {
+		} else if (semctl(semid, WAITING_ROOM, GETVAL, 0)) {
+			printf("Client %i is going to sleep.\n", getpid());
 			sleep(wait_time);
 		} else {
+			printf("Client %i is in the waiting room.\n", getpid());
 			sem_wait(semid, WAITING_ROOM, 1);
 		}
 	}
