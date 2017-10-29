@@ -14,18 +14,17 @@ void a_barber(char* program) {
 		exit(-1);
 	}
 
-	sem_wait(semid, BARBER, 1);
-	printf("Barber is in barbershop.\n");
-
-	if (!((semctl(semid, WAITING_ROOM, GETVAL, 0) == 10) && semctl(semid, SHAVING_ROOM, GETVAL, 0))) {
-		sem_signal(semid, BARBER, 1);
-		printf("Barber %i is going to sleep.\n", getpid());
-		sleep(10);
-	} else {
+	while (1) {
 		printf("Barber %i is attending a client %i\n", getpid(), semctl(semid, CLIENTS, GETVAL, 0));
-		sem_wait(semid, SHAVING_ROOM, 1);
 		sem_wait(semid, CLIENTS, 1);
+		printf("Number or chairs updated.\n");
+		sem_wait(semid, SHAVING_ROOM, 1);
+		printf("Chair is available.\n");
 		sem_signal(semid, WAITING_ROOM, 1);
+		printf("Barber %i is ready\n", getpid());
+		sem_signal(semid, BARBER, 1);
+		printf("Chairs blocked\n");
+		sem_signal(semid, SHAVING_ROOM, 1);
 	}
 	exit(0);
 }

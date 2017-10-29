@@ -1,7 +1,7 @@
 #include "header.h"
 
 void a_cliente(char* program, int wait_time) {
-	int i, k, semid;
+	int i, semid;
 	key_t key;
 
 	if ( (key = ftok("/dev/null", 125)) == (key_t) -1 ) {
@@ -14,23 +14,25 @@ void a_cliente(char* program, int wait_time) {
 		exit(-1);
 	}
 
-	for (k = 0; k < 10; k++) {
-
+	for (i = 0; i < 10; i++) {
 		printf("Client %i trying to access the barber.\n", getpid());
-		sem_wait(semid, CLIENTS, 1);
-		printf("Client %i accesing the barber.\n", getpid());
-
-		if (!semctl(semid, SHAVING_ROOM, GETVAL, 0)) {
-			printf("Client %i is in the shaving room.\n", getpid());
-			sem_wait(semid, SHAVING_ROOM, 1);
+		sem_wait(semid, SHAVING_ROOM, 1);
+		if (semctl(semid, WAITING_ROOM, GETVAL, 0) > 0) {
+			printf("Client %i accesing the barber.\n", getpid());
 			sem_signal(semid, WAITING_ROOM, 1);
-			sleep(wait_time);
-		} else if (!semctl(semid, WAITING_ROOM, GETVAL, 0)) {
+			printf("Client %i is in the waiting room.\n", getpid());
+			sem_signal(semid, CLIENTS, 1);
+			printf("Client %i is in the shaving room.\n", getpid());
+			sem_signal(semid, SHAVING_ROOM, 1);
+			sem_wait(semid, BARBER, 1);
 			printf("Client %i is going to sleep.\n", getpid());
 			sleep(wait_time);
 		} else {
-			printf("Client %i is in the waiting room.\n", getpid());
-			sem_wait(semid, WAITING_ROOM, 1);
+
+			printf("Barbershop is FULL.\n");
+			sem_signal(semid, SHAVING_ROOM, 1);
+			printf("Client %i is going to sleep.\n", getpid());
+			sleep(wait_time);
 		}
 	}
 	exit(0);
