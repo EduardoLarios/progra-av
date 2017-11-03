@@ -4,14 +4,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
 
-#define DEFAULT_PORT    9999
-#define DEFAULT_IP      "127.0.0.1"
+#define BARBER			 0
+#define CLIENTS 		 1
+#define SHAVING_ROOM 2
+#define WAITING_ROOM 3
+
+int sem_wait(int semid, int semnum, unsigned int val) {
+	struct sembuf op;
+
+	op.sem_num = semnum;
+	op.sem_op = -val;
+	op.sem_flg = 0;
+	return semop(semid, &op, 1);
+}
+
+int sem_signal(int semid, int semnum, unsigned int val) {
+	struct sembuf op;
+
+	op.sem_num = semnum;
+	op.sem_op = val;
+	op.sem_flg = 0;
+	return semop(semid, &op, 1);
+}
 
 #endif
