@@ -3,7 +3,7 @@
 
 void serves_client(int nsfd, int ndsfd) {
 	int turn = 1, game = 1, answer;
-	char* nickname1, nickname2, play;
+	char *nickname1, *nickname2, *play;
 
 
 	write(nsfd, "Give me your nickname:", 22);
