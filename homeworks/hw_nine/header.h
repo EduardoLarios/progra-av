@@ -11,6 +11,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#define SMALLER		-1
+#define EQUAL		0
+#define BIGGER		1
+#define CONTINUE	2
+#define END		    -2
+
 #define DEFAULT_PORT    9999
 #define DEFAULT_IP      "127.0.0.1"
 
