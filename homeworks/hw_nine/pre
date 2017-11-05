@@ -1,4 +1,6 @@
 git stash
 git pull
+gcc client.c -o client
+gcc server.c -o server
 chmod 775 run_client
-./run_client
+./server
