@@ -5,10 +5,7 @@ void serves_client(int nsfd, int ndsfd) {
 	int turn = 1, game = 1, answer;
 	char* nickname1, nickname2, play;
 
-	printf("PID = %i is in\n", getpid());
-	write(nsfd, "Your Nickname:", 15);
 	read(nsfd, &nickname1, sizeof(nickname1));
-	write(ndsfd, "Your Nickname:", 15);
 	read(ndsfd, &nickname2, sizeof(nickname2));
 
 	while (game) {
