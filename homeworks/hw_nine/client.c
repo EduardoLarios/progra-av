@@ -8,7 +8,7 @@ void display(int table[5][5]) {
   int i, j;
   for (i = 0; i < 5; i++) {
     for (j = 0; j < 5; j++) {
-      if (j == 0 || i = 0) {
+      if (j == 0 || i == 0) {
         printf(" %i ", table[i][j]);
       } else {
         printf("[%i]", table[i][j]);
@@ -37,7 +37,8 @@ void create_tables() {
     random1 = (rand() % 4) + 1;
     random2 = (rand() % 4) + 1;
     if (!mi_table[random1][random2]) {
-      mi_table[random1][random2] = 1
+      mi_table[random1][random2] = 1;
+      i++;
     }
   }
 }
@@ -58,7 +59,7 @@ int main(int argc, char* argv[]) {
 		printf("%s: The port must be greater than 5000.\n", argv[0]);
 		return -1;
 	}
-
+	
   create_tables();
   display(mi_table);
   printf("\n");
@@ -76,8 +77,8 @@ int main(int argc, char* argv[]) {
 	// 	return -1;
 	// }
 
-  printf("Give me your nick name: ");
-  gets(&nickname);
+  // printf("Give me your nick name: ");
+  // gets(&nickname);
   // write(sfd, &nickname, sizeof(nickname));
   // while (game) {
   //
