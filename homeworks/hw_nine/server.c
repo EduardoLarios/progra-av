@@ -1,34 +1,63 @@
 #include "header.h"
 #include <string.h>
 
-void serves_client(int nsfd) {
-	int number_sent, number_guess;
-	int guess, answer;
+void serves_client(int nsfd, int ndsfd) {
+	int turn = 1, game = 1, answer;
+	char *nickname1, *nickname2, *play;
 
-	srand(getpid());
-	do {
-		guess = 0;
-		number_guess = (rand() % 100) + 1;
-		printf("PID = %i <-> number to  guess = %i\n", getpid(), number_guess);
-		while (!guess) {
-			read(nsfd, &number_sent, sizeof(number_sent));
-			if (number_sent < number_guess) {
-				answer = SMALLER;
-			} else if (number_sent > number_guess) {
-				answer = BIGGER;
-			} else {
-				answer = EQUAL;
-				guess = 1;
-			}
-			write(nsfd, &answer, sizeof(answer));
-		}
-		read(nsfd, &answer, sizeof(answer));
-	} while (answer == CONTINUE);
+
+	write(nsfd, "Give me your nickname:", 22);
+	read(nsfd, &nickname1, sizeof(nickname1));
+	write(ndsfd, "Give me your nickname:", 22);
+	read(ndsfd, &nickname2, sizeof(nickname2));
+
+	// while (game) {
+	// 	if (turn) {
+	// 		write(nsfd, &nickname1, sizeof(nickname1));
+	// 		write(nsfd, " your turn:", 12);
+	// 		read(nsfd, &play, sizeof(play));
+	// 		write(ndsfd, &play, sizeof(play));
+	// 		write(ndsfd, &nickname2, sizeof(nickname2));
+	// 		write(ndsfd, ":", 1);
+	// 		read(ndsfd, &answer, sizeof(answer));
+	// 		if (answer == WON) {
+	// 			game = 0;
+	// 		}
+	// 		write(nsfd, &answer, sizeof(answer));
+	// 		turn = 0;
+	// 	} else {
+	// 		write(nsfd, &nickname2, sizeof(nickname2));
+	// 		write(ndsfd, " your turn:", 12);
+	// 		read(ndsfd, &play, sizeof(play));
+	// 		write(nsfd, &play, sizeof(play));
+	// 		write(nsfd, &nickname1, sizeof(nickname1));
+	// 		write(nsfd, ":", 11);
+	// 		read(nsfd, &answer, sizeof(answer));
+	// 		if (answer == WON) {
+	// 			game = 0;
+	// 		}
+	// 		write(ndsfd, &answer, sizeof(answer));
+	// 		turn = 1;
+	// 	}
+	// }
+	// if (turn) {
+	// 	write(ndsfd, 'Winner ->', sizeof(answer));
+	// 	write(ndsfd, &nickname2, sizeof(nickname2));
+	// 	write(nsfd, 'Winner ->', sizeof(answer));
+	// 	write(nsfd, &nickname2, sizeof(nickname2));
+	// } else {
+	// 	write(ndsfd, 'Winner ->', sizeof(answer));
+	// 	write(ndsfd, &nickname1, sizeof(nickname2));
+	// 	write(nsfd, 'Winner ->', sizeof(answer));
+	// 	write(nsfd, &nickname1, sizeof(nickname2));
+	// }
+
 	close(nsfd);
+	close(ndsfd);
 }
 
 void server(char* ip, int port, char* program) {
-	int sfd, nsfd, pid;
+	int sfd, nsfd, ndsfd, pid;
 	struct sockaddr_in server_info, client_info;
 
 	if ( (sfd = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
@@ -51,6 +80,12 @@ void server(char* ip, int port, char* program) {
 			perror(program);
 			exit(-1);
 		}
+		printf("Connection accepted\n");
+		if ( (ndsfd = accept(sfd, (struct sockaddr *) &client_info, &len)) < 0 ) {
+			perror(program);
+			exit(-1);
+		}
+		printf("Connection accepted\n");
 
 		/* CONCURRENTE
 		if ( (pid = fork()) < 0 ) {
@@ -64,7 +99,7 @@ void server(char* ip, int port, char* program) {
 		}
 		CONCURRENTE */
 
-		serves_client(nsfd); // ITERATIVO
+		serves_client(nsfd, ndsfd); // ITERATIVO
 	}
 }
 
