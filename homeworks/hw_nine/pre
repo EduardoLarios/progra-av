@@ -1,4 +1,4 @@
 git stash
 git pull
-chmod 775 run
+chmod 775 run_client
 ./run_client
