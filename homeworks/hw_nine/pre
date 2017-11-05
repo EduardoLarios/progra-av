@@ -1,0 +1,4 @@
+git stash
+git pull
+chmod 775 run
+./run_client
