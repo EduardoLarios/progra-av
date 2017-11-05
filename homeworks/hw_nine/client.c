@@ -59,27 +59,26 @@ int main(int argc, char* argv[]) {
 		printf("%s: The port must be greater than 5000.\n", argv[0]);
 		return -1;
 	}
-	
+
   create_tables();
   display(mi_table);
   printf("\n");
   display(oponent_table);
-	// if ( (sfd = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
-	// 	perror(argv[0]);
-	// 	return -1;
-	// }
-  //
-	// server_info.sin_family = AF_INET;
-	// server_info.sin_addr.s_addr = inet_addr(argv[1]);
-	// server_info.sin_port = htons(port);
-	// if ( connect(sfd, (struct sockaddr *) &server_info, sizeof(server_info)) < 0 ) {
-	// 	perror(argv[0]);
-	// 	return -1;
-	// }
+	if ( (sfd = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
+		perror(argv[0]);
+		return -1;
+	}
 
-  // printf("Give me your nick name: ");
-  // gets(&nickname);
-  // write(sfd, &nickname, sizeof(nickname));
+	server_info.sin_family = AF_INET;
+	server_info.sin_addr.s_addr = inet_addr(argv[1]);
+	server_info.sin_port = htons(port);
+	if ( connect(sfd, (struct sockaddr *) &server_info, sizeof(server_info)) < 0 ) {
+		perror(argv[0]);
+		return -1;
+	}
+
+  gets(&nickname);
+  write(sfd, &nickname, sizeof(nickname));
   // while (game) {
   //
   //   gets(&play)
@@ -92,6 +91,6 @@ int main(int argc, char* argv[]) {
 	// 		default     : printf("You win\n"); game = 1; break;
 	// 	}
 	// }
-	// close(sfd);
+	close(sfd);
 	return 0;
 }

@@ -5,49 +5,52 @@ void serves_client(int nsfd, int ndsfd) {
 	int turn = 1, game = 1, answer;
 	char* nickname1, nickname2, play;
 
+
+	write(nsfd, "Give me your nickname:", 22);
 	read(nsfd, &nickname1, sizeof(nickname1));
+	write(ndsfd, "Give me your nickname:", 22);
 	read(ndsfd, &nickname2, sizeof(nickname2));
 
-	while (game) {
-		if (turn) {
-			write(nsfd, &nickname1, sizeof(nickname1));
-			write(nsfd, " your turn:", 12);
-			read(nsfd, &play, sizeof(play));
-			write(ndsfd, &play, sizeof(play));
-			write(ndsfd, &nickname2, sizeof(nickname2));
-			write(ndsfd, ":", 1);
-			read(ndsfd, &answer, sizeof(answer));
-			if (answer == WON) {
-				game = 0;
-			}
-			write(nsfd, &answer, sizeof(answer));
-			turn = 0;
-		} else {
-			write(nsfd, &nickname2, sizeof(nickname2));
-			write(ndsfd, " your turn:", 12);
-			read(ndsfd, &play, sizeof(play));
-			write(nsfd, &play, sizeof(play));
-			write(nsfd, &nickname1, sizeof(nickname1));
-			write(nsfd, ":", 11);
-			read(nsfd, &answer, sizeof(answer));
-			if (answer == WON) {
-				game = 0;
-			}
-			write(ndsfd, &answer, sizeof(answer));
-			turn = 1;
-		}
-	}
-	if (turn) {
-		write(ndsfd, 'Winner ->', sizeof(answer));
-		write(ndsfd, &nickname2, sizeof(nickname2));
-		write(nsfd, 'Winner ->', sizeof(answer));
-		write(nsfd, &nickname2, sizeof(nickname2));
-	} else {
-		write(ndsfd, 'Winner ->', sizeof(answer));
-		write(ndsfd, &nickname1, sizeof(nickname2));
-		write(nsfd, 'Winner ->', sizeof(answer));
-		write(nsfd, &nickname1, sizeof(nickname2));
-	}
+	// while (game) {
+	// 	if (turn) {
+	// 		write(nsfd, &nickname1, sizeof(nickname1));
+	// 		write(nsfd, " your turn:", 12);
+	// 		read(nsfd, &play, sizeof(play));
+	// 		write(ndsfd, &play, sizeof(play));
+	// 		write(ndsfd, &nickname2, sizeof(nickname2));
+	// 		write(ndsfd, ":", 1);
+	// 		read(ndsfd, &answer, sizeof(answer));
+	// 		if (answer == WON) {
+	// 			game = 0;
+	// 		}
+	// 		write(nsfd, &answer, sizeof(answer));
+	// 		turn = 0;
+	// 	} else {
+	// 		write(nsfd, &nickname2, sizeof(nickname2));
+	// 		write(ndsfd, " your turn:", 12);
+	// 		read(ndsfd, &play, sizeof(play));
+	// 		write(nsfd, &play, sizeof(play));
+	// 		write(nsfd, &nickname1, sizeof(nickname1));
+	// 		write(nsfd, ":", 11);
+	// 		read(nsfd, &answer, sizeof(answer));
+	// 		if (answer == WON) {
+	// 			game = 0;
+	// 		}
+	// 		write(ndsfd, &answer, sizeof(answer));
+	// 		turn = 1;
+	// 	}
+	// }
+	// if (turn) {
+	// 	write(ndsfd, 'Winner ->', sizeof(answer));
+	// 	write(ndsfd, &nickname2, sizeof(nickname2));
+	// 	write(nsfd, 'Winner ->', sizeof(answer));
+	// 	write(nsfd, &nickname2, sizeof(nickname2));
+	// } else {
+	// 	write(ndsfd, 'Winner ->', sizeof(answer));
+	// 	write(ndsfd, &nickname1, sizeof(nickname2));
+	// 	write(nsfd, 'Winner ->', sizeof(answer));
+	// 	write(nsfd, &nickname1, sizeof(nickname2));
+	// }
 
 	close(nsfd);
 	close(ndsfd);
