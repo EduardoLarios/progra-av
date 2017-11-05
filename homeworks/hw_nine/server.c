@@ -80,10 +80,12 @@ void server(char* ip, int port, char* program) {
 			perror(program);
 			exit(-1);
 		}
+		printf("Connection accepted\n");
 		if ( (ndsfd = accept(sfd, (struct sockaddr *) &client_info, &len)) < 0 ) {
 			perror(program);
 			exit(-1);
 		}
+		printf("Connection accepted\n");
 
 		/* CONCURRENTE
 		if ( (pid = fork()) < 0 ) {

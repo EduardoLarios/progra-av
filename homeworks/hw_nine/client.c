@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
   int sfd, game = 1, answer;
 	int port;
 	struct sockaddr_in server_info;
-  char* nickname, play;
+  char *nickname, *play;
 
 	if (argc != 3) {
 	    printf("usage: %s ip port\n", argv[0]);
