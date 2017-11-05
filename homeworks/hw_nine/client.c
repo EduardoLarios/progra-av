@@ -1,24 +1,43 @@
 #include "header.h"
 #include <time.h>
 
-int mi_table[4][4];
-int oponent_table[4][4];
+int mi_table[5][5];
+int oponent_table[5][5];
 
-void display(int table[4][4]) {
+void display(int table[5][5]) {
   int i, j;
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 4; j++) {
-      printf("[%i]", table[i][j]);
+  for (i = 0; i < 5; i++) {
+    for (j = 0; j < 5; j++) {
+      if (j == 0 || i = 0) {
+        printf(" %i ", table[i][j]);
+      } else {
+        printf("[%i]", table[i][j]);
+      }
     }
     printf("\n");
   }
 }
-void create_table() {
-  int i, j;
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 4; j++) {
+void create_tables() {
+  int i, j, random1, random2;
+  for (i = 1; i < 5; i++) {
+    mi_table[0][i] = i;
+    mi_table[i][0] = i;
+    oponent_table[0][i] = i;
+    oponent_table[i][0] = i;
+  }
+  for (i = 1; i < 5; i++) {
+    for (j = 1; j < 5; j++) {
       mi_table[i][j] = 0;
       oponent_table[i][j] = 0;
+    }
+  }
+  srand(time(NULL));
+  i = 0;
+  while (i < 4) {
+    random1 = (rand() % 4) + 1;
+    random2 = (rand() % 4) + 1;
+    if (!mi_table[random1][random2]) {
+      mi_table[random1][random2] = 1
     }
   }
 }
@@ -40,7 +59,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-  create_table();
+  create_tables();
   display(mi_table);
   printf("\n");
   display(oponent_table);
