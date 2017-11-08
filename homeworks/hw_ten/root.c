@@ -15,7 +15,7 @@ double array[SIZE];
 void square_root() {
   double i;
 
-  for (i = 0; i < 100; i++) {
+  for (i = 0.0; i < 100.0; i++) {
     array[i] = sqrt(i);
   }
 };
@@ -29,7 +29,7 @@ void* task(void* param) {
     printf("Wait for the result\n");
     if (array[SIZE - 1]) {
       for (i = 0; i < 100; i++) {
-        printf("[ %d ]\n", array[i]);
+        printf("[ %lf ]\n", array[i]);
       }
     }
   }
