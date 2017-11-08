@@ -16,7 +16,7 @@ void square_root() {
   double i;
 
   for (i = 0.0; i < 100.0; i++) {
-    array[i] = sqrt(i);
+    array[(int) i] = sqrt(i);
   }
 };
 
@@ -26,10 +26,13 @@ void* task(void* param) {
   if (thread) {
     square_root();
   } else {
-    printf("Wait for the result\n");
-    if (array[SIZE - 1]) {
-      for (i = 0; i < 100; i++) {
-        printf("[ %lf ]\n", array[i]);
+    printf("Wait for the result...\n");
+    while (1) {
+      if (array[SIZE - 1]) {
+        for (i = 0; i < 100; i++) {
+          printf("[ %lf ]\n", array[i]);
+        }
+        break;
       }
     }
   }
@@ -48,7 +51,7 @@ int main(int arg, char* argv[]) {
   pthread_create(&pthread_id[0], NULL, task, (void *) &t);
   pthread_create(&pthread_id[1], NULL, task, (void *) &t2);
 
-	pthread_join(pthread_id[0], &ret);
+	pthread_join(pthread_id[1], &ret);
 	printf("PID = %i - all threads are terminated\n", getpid());
 
 	return 0;
