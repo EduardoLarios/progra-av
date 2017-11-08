@@ -27,13 +27,12 @@ void* task(void* param) {
 int main(int arg, char* argv[]) {
 	pthread_t pthread_id[2];
 	void* ret;
-  int t = 1;
+  int t = 1, t2 = 0;
   char message[] = "Wait for the result";
 
 	printf("PID = %i - creating threads\n", getpid());
   pthread_create(&pthread_id[0], NULL, task, (void *) &t);
-  t = 0;
-  pthread_create(&pthread_id[1], NULL, task, (void *) &t);
+  pthread_create(&pthread_id[1], NULL, task, (void *) &t2);
 
 	pthread_join(pthread_id[0], &ret);
 	printf("PID = %i - all threads are terminated\n", getpid());
