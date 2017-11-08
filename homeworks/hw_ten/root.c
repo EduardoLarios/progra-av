@@ -8,8 +8,12 @@
 #include <pthread.h>
 #include <unistd.h>
 
+void square_root() {
+  printf("Finished\n");
+};
+
 void* task(void* param) {
-  int thread *( (int *) param );
+  int thread = *( (int *) param );
   if (thread) {
     square_root();
   } else {
@@ -19,9 +23,6 @@ void* task(void* param) {
 	return ( (void*) 0);
 }
 
-void square_root() {
-  printf("Finished\n");
-};
 
 int main(int arg, char* argv[]) {
 	pthread_t pthread_id[2];
