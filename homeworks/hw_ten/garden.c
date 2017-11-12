@@ -7,72 +7,63 @@
 #include <pthread.h>
 #include <errno.h>
 
-#define SIZE 10
+#define SIZE 1000
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t space_available = PTHREAD_COND_INITIALIZER;
-pthread_cond_t data_available = PTHREAD_COND_INITIALIZER;
+pthread_cond_t people_garden = PTHREAD_COND_INITIALIZER;
 
-int b[SIZE];  
-int size = 0;  
-int front = 0, rear = 0;  
+long int size = 0;
 
-void add_buffer(int i) {
-	b[rear] = i;
-	rear = (rear + 1) % SIZE;
-	size++;
-}
-
-int get_buffer(){
-	int v;
-	v = b[front];
-	front= (front+1) % SIZE;
-	size--;
-	return v ;
-}
- 
-void* producer(void *arg) {
-	int i = 0;
-	
-	printf("producter starting...\n");
-	while (1) {
-  		pthread_mutex_lock(&mutex);
-  		if (size == SIZE) {
-     		pthread_cond_wait(&space_available, &mutex);
-  		}
-  		printf("producer adding %i...\n", i);
-		add_buffer(i);
-		pthread_cond_signal(&data_available);
+void update_garden() {
+    int i, random1, random2;
+    for (i = 0; i < 100; i++) {
+   		pthread_mutex_lock(&mutex);
+   		if (size == SIZE) {
+       		pthread_cond_wait(&people_garden, &mutex); 
+   		}
+   		random1 = (rand() % 30);
+		size += random1;
 		pthread_mutex_unlock(&mutex);
-		i = i + 1;
+       	random2 = (rand() % 20);
+		if (size && size > random2) {
+    		pthread_mutex_lock(&mutex);
+    		size -= random2;
+        	pthread_cond_signal(&people_garden);
+        	pthread_mutex_unlock(&mutex);
+		}
+  		printf("People in Garden %li...\n", size);
 	}
+}
+
+void* east(void *arg) {
+	printf("East entrance opened...\n");
+	update_garden();
 	pthread_exit(NULL);
 }
 
-void* consumer(void *arg) {
-	int i,v;
-	printf("consumer starting...\n");
-	for (i=0;i<100;i++) {
-   		pthread_mutex_lock(&mutex);
-   		if (size == 0) {
-       		pthread_cond_wait(&data_available, &mutex); 
-   		}
-		v = get_buffer();
-		printf("consumer getting %i...\n", v);
-		pthread_cond_signal(&space_available);
-		pthread_mutex_unlock(&mutex);
-	}
-	printf("consuming finishing...\n");
+void* west(void *arg) {
+	printf("West entrance opened...\n");
+	update_garden();
 	pthread_exit(NULL);
 }
  
 int main(int argc, char* argv[])   {
-	pthread_t producer_thread; 
-	pthread_t consumer_thread; 
+    time_t t;
+	pthread_t west_thread; 
+	pthread_t east_thread; 
+	srand((unsigned) time(&t));
 	
-	pthread_create(&consumer_thread, NULL, consumer, NULL);
-    pthread_create(&producer_thread, NULL, producer, NULL);
-    pthread_join(consumer_thread, NULL);
+	pthread_create(&west_thread, NULL, west, NULL);
+    pthread_create(&east_thread, NULL, east, NULL);
+    pthread_join(west_thread, NULL);
+    pthread_join(east_thread, NULL);
+    printf("Garden closed\n");
+    if (size) {
+	    pthread_mutex_lock(&mutex);
+    	size -= size;
+        pthread_cond_signal(&people_garden);
+        pthread_mutex_unlock(&mutex);
+	}
     return 0;
 }
 
