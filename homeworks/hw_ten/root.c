@@ -1,5 +1,5 @@
 /**
-* To compile: gcc root.c -o root -lpthread
+* To compile: gcc root.c -o root -lpthread -lm
 **/
 
 #include <stdio.h>
