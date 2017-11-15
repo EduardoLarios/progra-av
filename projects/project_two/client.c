@@ -1,8 +1,7 @@
 #include "header.h"
 
 int main(int argc, char* argv[]) {
-  int sfd, number, answer, continuE;
-	int port, guess;
+  int sfd, port;
 	struct sockaddr_in server_info;
 
 	if (argc != 3) {
@@ -29,28 +28,8 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	do {
-		guess = 0;
-		while (!guess) {
-			printf("Give me the number: ");
-			scanf("%i", &number);
+  printf("Successfuly conected\n");
 
-			write(sfd, &number, sizeof(number));
-			read(sfd, &answer, sizeof(answer));
-
-			switch (answer) {
-				case SMALLER: printf("The number is smaller.\n"); break;
-				case BIGGER : printf("The number is bigger.\n"); break;
-				default     : guess = 1; break;
-			}
-		}
-		printf("You guessed it! Congratulations!\n");
-		printf("Continue? (0/1)? ");
-		scanf("%i", &continuE);
-
-		answer = (continuE == 1)? CONTINUE : END;
-		write(sfd, &answer, sizeof(answer));
-	} while (continuE == 1);
 	close(sfd);
 	return 0;
 }

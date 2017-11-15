@@ -3,15 +3,17 @@
 
 #define SIZE 100
 
+char ruta[SIZE];
+
 void* serves_client(void *param) {
 	int nsfd = *( (int*) param);
 
   printf("PID = %i\n", getpid());
-  // como enviar dos parametros en uno
+  printf("%s\n", ruta);
 	close(nsfd);
 }
 
-void server(char* ip, int port, char* ruta, char* program) {
+void server(char* ip, int port, char* program) {
 	int sfd, nsfd, pid;
 	pthread_t thread_id;
 	struct sockaddr_in server_info, client_info;
@@ -43,7 +45,7 @@ void server(char* ip, int port, char* ruta, char* program) {
 
 int main(int argc, char* argv[]) {
 
-	char ruta[SIZE], ip[15];
+	char ip[15];
   int port;
 
   strcpy(ip, DEFAULT_IP);
@@ -55,7 +57,7 @@ int main(int argc, char* argv[]) {
 
   ruta = argv[1];
 
-	server(ip, port, ruta, argv[0]);
+	server(ip, port, argv[0]);
 
 	return 0;
 }
