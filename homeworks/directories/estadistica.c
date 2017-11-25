@@ -10,24 +10,26 @@
 #include <grp.h>
 #include <string.h>
 
-int count = 0;
-int blk = 0;
-int chr = 0;
-int idir = 0;
-int fifo = 0;
-int lnk = 0;
-int reg = 0;
-int sock = 0;
+float count = 0;
+float blk = 0;
+float chr = 0;
+float idir = 0;
+float fifo = 0;
+float lnk = 0;
+float reg = 0;
+float sock = 0;
 
 void show_types(char* directory, char* name, char *program) {
 	struct stat ss;
+	char filename[NAME_MAX + 1];
 
+	sprintf(filename, "%s/%s", directory, name);
 	if (lstat(filename, &ss) == -1) {
 		perror(program);
 		exit(-1);
 	}
 
-  switch (sb.st_mode & S_IFMT) {
+  switch (ss.st_mode & S_IFMT) {
     case S_IFBLK: blk++; break;
     case S_IFCHR: chr++; break;
     case S_IFDIR: idir++; break;
@@ -45,14 +47,14 @@ void list(char *directory, char *program) {
 	DIR *dir;
 	struct dirent *dir_entry;
 	struct stat ss;
-  float percentage;
+  int percentage;
 
 	if ( (dir = opendir(directory)) == NULL ) {
 		perror(program);
 		exit(-1);
 	}
 
-	printf("%s:\n", directory);
+	printf("directorio: %s:\n", directory);
 	while ( (dir_entry = readdir(dir)) != NULL ) {
 		if (strcmp(dir_entry->d_name, ".") == 0 ||
 			strcmp(dir_entry->d_name, "..")  == 0) {
@@ -64,29 +66,37 @@ void list(char *directory, char *program) {
 	printf("\n");
   printf("Tipo \t Porcentaje\n");
   if (blk > 0) {
-    percentage = (blk / count) * 100;
-    printf("BLK \t %f\n", percentage);
+    percentage = (int)((blk / count) * 100);
+    printf("BLK \t %i%%\n", percentage);
   }
   if (chr > 0) {
-    percentage = (chr / count) * 100;
-    printf("CHR \t %f\n", percentage);
+    percentage = (int)((chr / count) * 100);
+    printf("CHR \t %i%%\n", percentage);
   }
   if (idir > 0) {
-    percentage = (idir / count) * 100;
-    printf("DIR \t %f\n", percentage);
+    percentage = (int)((idir / count) * 100);
+    printf("DIR \t %i%%\n", percentage);
   }
   if (fifo > 0) {
-    percentage = (fifo / count) * 100;
-    printf("FIFO \t %f\n", percentage);
+    percentage = (int)((fifo / count) * 100);
+    printf("FIFO \t %i%%\n", percentage);
   }
   if (reg > 0) {
-    percentage = (reg / count) * 100;
-    printf("REG \t %f\n", percentage);
+    percentage = (int)((reg/count) * 100);
+    printf("REG \t %i%%\n", percentage);
   }
   if (sock > 0) {
-    percentage = (sock / count) * 100;
-    printf("SOCK \t %f\n", percentage);
+    percentage = (int)((sock / count) * 100);
+    printf("SOCK \t %i%% \n", percentage);
   }
+  count = 0;
+  blk = 0;
+  chr = 0;
+  idir = 0;
+  fifo = 0;
+  lnk = 0;
+  reg = 0;
+  sock = 0;
 	rewinddir(dir);
 	while ( (dir_entry = readdir(dir)) != NULL ) {
 		if (strcmp(dir_entry->d_name, ".") == 0 ||
@@ -96,7 +106,7 @@ void list(char *directory, char *program) {
 		sprintf(filename, "%s/%s", directory, dir_entry->d_name);
 		stat(filename, &ss);
 		if (S_ISDIR(ss.st_mode)) {
-			list(filename, recursive, program);
+			list(filename, program);
 		}
 	}
 	closedir(dir);
@@ -112,7 +122,6 @@ int main(int argc, char* argv[]) {
 	}
 
 	strcpy(dir_name, ".");
-	recursive = 0;
 	directory = dir_name;
 	if (argc == 2) {
     directory = argv[1];
