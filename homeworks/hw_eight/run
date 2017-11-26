@@ -1,9 +1,0 @@
-gcc barberia.c -o barberia
-gcc cliente.c -o cliente
-gcc barbero.c -o barbero
-
-./barberia 10
-
-./barbero
-
-./cliente 10 5
